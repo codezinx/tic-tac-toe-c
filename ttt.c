@@ -8,6 +8,7 @@ typedef struct {
 } coord;
 
 coord getPlayerInput(char grid[3][3]);
+coord getComputerInput(char grid[3][3]);
 void drawGrid(char grid[3][3]);
 int getPlayer(char mark);
 int checkWinner(char grid[3][3]);
@@ -22,6 +23,7 @@ int main() {
                        {' ', ' ', ' '}};
     
     int playerTurn = 1;
+    int playComputer = 0; // 1 = player, 2 = computer
     int winner = 0;
     int freeSquares = 9;
 
@@ -34,16 +36,48 @@ int main() {
     printf("-----------\n");
     printf(" 7 | 8 | 9 \n\n");
 
-    // Play against a friend or the computer
+    // Ask user whether they want to play against a friend or the computer repeatedly
 
-    // puts("Do you want to play against a friend or the computer?\n");
+    int ch;
+
+    while (playComputer != 1 && playComputer != 2 && playComputer != 3) {
+        // Play against a friend or the computer
+
+        puts("Do you want to play against a friend or the computer?\n");
+        puts("1. Friend (person)");
+        puts("2. Computer");
+        puts("3. Quit\n");
+        printf("Enter your selection: ");
+
+        // Collect input and validate correct data type
     
+        if (scanf("%d", &playComputer) != 1) {
+            // Invalid input. Clear buffer.
+            while ((ch = getchar()) != '\n' && ch != EOF) ;
+            puts("Invalid input. Please try again.\n");
+        }
+
+        puts("");
+
+        // Validate if input is correct
+
+        if (playComputer != 1 && playComputer != 2 && playComputer != 3)
+            puts("Invalid input. Please try again.\n");
+        else if (playComputer == 3)
+            exit(1);
+    }
+
     // Get player input
 
     while (freeSquares > 0 && winner == 0) {
         drawGrid(grid);
         printf("\nPlayer %d's turn\n", playerTurn);
-        coord selection = getPlayerInput(grid);
+        coord selection;
+
+        if (playComputer == 1 || playerTurn == 1)
+            selection = getPlayerInput(grid);
+        else
+            selection = getComputerInput(grid);
 
         if (selection.row == -1 && selection.column == -1) {
             puts("Invalid input\n");
@@ -128,6 +162,12 @@ coord getPlayerInput(char grid[3][3]) {
         return error;
 
     return result;
+}
+
+coord getComputerInput(char grid[3][3]) {
+    // Store tic-tac-toe list coordinates 
+    int rowVals[] = {0, 0, 0, 1, 1, 1, 2, 2, 2};
+    int colVals[] = {0, 1, 2, 0, 1, 2, 0, 1, 2};
 }
 
 void drawGrid(char grid[3][3]) {
