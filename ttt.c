@@ -78,6 +78,7 @@ int main() {
             selection = getPlayerInput(grid);
         else
             selection = getComputerInput(grid);
+            puts(""); // Print a newline to fix formatting issues
 
         if (selection.row == -1 && selection.column == -1) {
             puts("Invalid input\n");
@@ -168,6 +169,34 @@ coord getComputerInput(char grid[3][3]) {
     // Store tic-tac-toe list coordinates 
     int rowVals[] = {0, 0, 0, 1, 1, 1, 2, 2, 2};
     int colVals[] = {0, 1, 2, 0, 1, 2, 0, 1, 2};
+
+    // Generate a random row and column value until a free square is found. Set hard limit to 9 attempts (max number of squares).
+    
+    int attempts = 1;
+    int index = rand() % 9;
+
+    while (grid[rowVals[index]][colVals[index]] != ' ' && attempts < 9) {
+        index = rand() % 9;
+        attempts++;
+    }
+
+    // Successful index
+
+    if (grid[rowVals[index]][colVals[index]] == ' ') {
+        coord result;
+        result.row = rowVals[index];
+        result.column = colVals[index];
+        return result;
+    }
+    
+    // Failed index (should theoretically never occur)
+
+    else {
+        coord error;
+        error.row = -1;
+        error.column = -1;
+        return error;
+    }
 }
 
 void drawGrid(char grid[3][3]) {
