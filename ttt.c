@@ -78,7 +78,8 @@ int main() {
             selection = getPlayerInput(grid);
         else
             selection = getComputerInput(grid);
-            puts(""); // Print a newline to fix formatting issues
+
+        puts(""); // Print a newline to fix formatting issues
 
         if (selection.row == -1 && selection.column == -1) {
             puts("Invalid input\n");
